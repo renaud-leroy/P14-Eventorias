@@ -11,6 +11,7 @@ struct FormField: View {
     
     let label: String
     let placeholder: String
+    let isSecureTextEntry: Bool
     @Binding var text: String
     
     var body: some View {
@@ -18,19 +19,27 @@ struct FormField: View {
             Text(label)
                 .font(.caption)
                 .foregroundStyle(.customColorTextForm)
-            TextField("", text: $text, prompt: Text(placeholder).foregroundColor(.customWhite))
-                .foregroundColor(.customWhite)
+            if isSecureTextEntry {
+                SecureField("",
+                            text: $text,
+                            prompt: Text(placeholder).foregroundColor(.customWhite))
+            } else {
+                TextField("",
+                          text: $text,
+                          prompt: Text(placeholder).foregroundColor(.customWhite))
+            }
         }
         .padding()
         .background(Color.customGrey)
         .cornerRadius(4)
+        .foregroundColor(.customWhite)
     }
 }
 
 #Preview("FormField") {
     ZStack {
         Color.customColorBackground.ignoresSafeArea()
-        FormField(label: "Title", placeholder: "New event", text: .init(get: {""}, set: {_ in}))
+        FormField(label: "Title", placeholder: "New event", isSecureTextEntry: false, text: .init(get: {""}, set: {_ in}))
             .padding()
     }
 }

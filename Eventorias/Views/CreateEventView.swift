@@ -21,13 +21,13 @@ struct CreateEventView: View {
             ZStack {
                 Color.customColorBackground.ignoresSafeArea()
                 VStack(spacing: 26) {
-                    FormField(label: "Title", placeholder: "New Event", text: $title)
-                    FormField(label: "Description", placeholder: "Tap here to enter your description", text: $description)
+                    FormField(label: "Title", placeholder: "New Event", isSecureTextEntry: false, text: $title)
+                    FormField(label: "Description", placeholder: "Tap here to enter your description", isSecureTextEntry: false, text: $description)
                     HStack(spacing: 18) {
-                        FormField(label: "Date", placeholder: "MM/DD/YYYY", text: $date)
-                        FormField(label: "Time", placeholder: "HH : MM", text: $time)
+                        FormField(label: "Date", placeholder: "MM/DD/YYYY", isSecureTextEntry: false, text: $date)
+                        FormField(label: "Time", placeholder: "HH : MM", isSecureTextEntry: false, text: $time)
                     }
-                    FormField(label: "Address", placeholder: "Enter full address", text: $address)
+                    FormField(label: "Address", placeholder: "Enter full address", isSecureTextEntry: false, text: $address)
                     HStack(spacing: 18) {
                         CameraButton()
                         PaperclipButton()

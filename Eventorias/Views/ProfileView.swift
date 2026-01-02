@@ -18,8 +18,8 @@ struct ProfileView: View {
             Color(.customColorBackground)
                 .ignoresSafeArea()
             VStack(spacing: 26) {
-                FormField(label: "Name", placeholder: "Christopher Evan", text: $name)
-                FormField(label: "Email", placeholder: "christopherevans@gmail.com", text: $email)
+                FormField(label: "Name", placeholder: "Christopher Evan", isSecureTextEntry: false, text: $name)
+                FormField(label: "Email", placeholder: "christopherevans@gmail.com", isSecureTextEntry: false, text: $email)
                 HStack(spacing: 20) {
                     Toggle("", isOn: $isNotificationOn)
                         .tint(Color(.customRed))

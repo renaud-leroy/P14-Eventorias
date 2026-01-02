@@ -25,7 +25,7 @@ struct EventoriasApp: App {
 
     var body: some Scene {
         WindowGroup {
-            AuthView()
+            AuthView(vm: AuthViewModel(isAuthenticated: false, authService: AuthService()))
         }
     }
 }

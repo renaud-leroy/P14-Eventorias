@@ -8,26 +8,58 @@
 import SwiftUI
 
 struct AuthView: View {
+    @State var vm: AuthViewModel
     @State private var showMain: Bool = false
+    @State private var showForm: Bool = false
+    @State private var email: String = ""
+    @State private var password: String = ""
+    
     var body: some View {
         NavigationStack {
             ZStack {
                 VStack {
-                    EventoriasLogo()
-                        .padding(.top, 150)
+                    Image("logoEventorias")
+                        .padding(.top, 130)
                         .padding(.bottom, 50)
+                    FormField(label: "Email",
+                              placeholder: "",
+                              isSecureTextEntry: false,
+                              text: $email)
+                        .frame(maxWidth: 300)
+                    FormField(label: "Password",
+                              placeholder: "",
+                              isSecureTextEntry: true,
+                              text: $password)
+                        .frame(maxWidth: 300)
                     Button {
-                        showMain = true
+                        Task {
+                            try await vm.login(email: email, password: password)
+                        }
                     } label: {
-                        SignInButton(title: "Sign in with Mail", iconName: "Mail")
+                        CustomButton(label: "Sign in with Mail", iconName: "envelope.fill")
+                            .padding(30)
+                    }
+                    Divider()
+                        .background(Color(.customColorTextForm))
+                        .frame(maxWidth: 300)
+                        .padding(.bottom, 30)
+                    Text("No account? Sign up")
+                        .foregroundStyle(.customColorTextForm)
+                        .font(.caption)
+                    Button {
+                        showForm = true
+                    } label: {
+                        CustomButton(label: "Sign Up", iconName: "person.badge.plus")
+                            .padding(10)
                     }
                     Spacer()
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.customColorBackground))
-            .navigationDestination(isPresented: $showMain) {
+            .navigationDestination(isPresented: $vm.isAuthenticated) {
                 MainTabView()
+                    .navigationBarBackButtonHidden(true)
             }
         }
     }
@@ -50,19 +82,19 @@ struct EventoriasLogo: View {
     }
 }
 
-struct SignInButton: View {
-    let title: String
+struct CustomButton: View {
+    let label: String
     let iconName: String
     var body: some View {
-        HStack(spacing: 25) {
-            Image("mailIcon")
+        HStack(spacing: 10) {
+            Image(systemName: iconName)
                 .foregroundColor(.white)
-            Text(title)
+            Text(label)
         }
         .padding()
         .frame(
             maxWidth: 240,
-            alignment: .init(horizontal: .leading, vertical: .center)
+            alignment: .init(horizontal: .center, vertical: .center)
         )
         .foregroundColor(.white)
         .background(Color(.customRed))
@@ -71,9 +103,9 @@ struct SignInButton: View {
 }
 
 #Preview("AuthView") {
-    AuthView()
+    AuthView(vm: .init(isAuthenticated: false, errorMessage: nil, authService: AuthService()))
 }
 
-#Preview("SignInButton") {
-    SignInButton(title: "Sign in with Mail", iconName: "Mail")
+#Preview("CustomButton") {
+    CustomButton(label: "Sign in with Mail", iconName: "Mail")
 }
