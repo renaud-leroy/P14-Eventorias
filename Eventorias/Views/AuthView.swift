@@ -9,7 +9,6 @@ import SwiftUI
 
 struct AuthView: View {
     @State var vm: AuthViewModel
-    @State private var showMain: Bool = false
     @State private var showForm: Bool = false
     @State private var email: String = ""
     @State private var password: String = ""
@@ -47,7 +46,7 @@ struct AuthView: View {
                         .foregroundStyle(.customColorTextForm)
                         .font(.caption)
                     Button {
-                        showForm = true
+                        // vue signUp à implementer
                     } label: {
                         CustomButton(label: "Sign Up", iconName: "person.badge.plus")
                             .padding(10)
