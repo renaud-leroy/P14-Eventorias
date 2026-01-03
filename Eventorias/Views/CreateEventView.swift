@@ -45,6 +45,7 @@ struct CreateEventView: View {
                             .fontWeight(.bold)
                     }
                 }
+                .padding()
             }
         }
         .navigationTitle(Text("Creation of an event"))

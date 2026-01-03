@@ -61,7 +61,7 @@ struct EventDetailView: View {
                                     longitudeDelta: 0.01
                                 )
                             )
-                        )
+                        ), interactionModes: []
                     )
                     .frame(maxWidth: 150, maxHeight: 70)
                     .cornerRadius(12)

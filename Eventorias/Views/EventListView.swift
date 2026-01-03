@@ -9,22 +9,71 @@ import SwiftUI
 
 struct EventListView: View {
     let vm: EventViewModel
+    @State private var isShowingCreateEvent = false
+    @State private var searchQuery: String = ""
     var body: some View {
-        ZStack {
-            Color(.customColorBackground)
-                .ignoresSafeArea()
-            ScrollView {
-                VStack(alignment: .leading) {
-                    ForEach (vm.eventsList, id: \.title) { event in
-                        NavigationLink(destination: EventDetailView(event: event)) {
-                            EventRow(event: event)
-                        }
+        VStack(alignment: .leading, spacing: 20) {
+            HStack(spacing: 8) {
+                Image(systemName: "magnifyingglass")
+                TextField("", text: $searchQuery)
+            }
+            .foregroundStyle(.customWhite)
+            .padding(.horizontal, 12)
+            .frame(height: 35)
+            .background(Color(.customGrey))
+            .cornerRadius(35)
+            Button {
+                // action de tri à ajouter
+            } label: {
+                HStack(spacing: 4) {
+                    Image(systemName: "arrow.up.arrow.down")
+                    Text("Sorting")
+                }
+                .frame(maxWidth: 105, maxHeight: 35)
+                .font(.subheadline)
+                .foregroundColor(.white)
+                .background(Color(.customGrey))
+                .cornerRadius(35)
+            }
+
+            List {
+                ForEach(vm.eventsList, id: \.title) { event in
+                    NavigationLink {
+                        EventDetailView(event: event)
+                    } label: {
+                        EventRow(event: event)
                     }
+                    .listRowInsets(EdgeInsets(
+                        top: 8,
+                        leading: 0,
+                        bottom: 8,
+                        trailing: 0
+                    ))
+                    .buttonStyle(.plain)
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
                 }
             }
-            .padding()
         }
-        .navigationBarBackButtonHidden()
+        .padding()
+        .scrollIndicators(.hidden)
+        .navigationLinkIndicatorVisibility(.hidden)
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .background(Color.customColorBackground)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    isShowingCreateEvent = true
+                } label: {
+                    Image(systemName: "plus")
+                        .foregroundStyle(.customWhite)
+                }
+            }
+        }
+        .sheet(isPresented: $isShowingCreateEvent) {
+            CreateEventView()
+        }
     }
 }
 

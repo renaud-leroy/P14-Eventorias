@@ -33,8 +33,13 @@ struct ProfileView: View {
                     .padding(.vertical)
             }
             .padding()
-            .navigationTitle("User profile")
             .toolbar {
+                ToolbarItem(placement: .principal) {
+                        Text("User profile")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                    }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Image("avatar5")
                         .resizable()

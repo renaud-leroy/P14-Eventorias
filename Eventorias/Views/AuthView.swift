@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct AuthView: View {
-    @State var vm: AuthViewModel
-    @State private var showForm: Bool = false
+    let vm: AuthViewModel
+    @State private var isShowingRegisterSheet: Bool = false
     @State private var email: String = ""
     @State private var password: String = ""
     
@@ -24,15 +24,15 @@ struct AuthView: View {
                               placeholder: "",
                               isSecureTextEntry: false,
                               text: $email)
-                        .frame(maxWidth: 300)
+                    .frame(maxWidth: 300)
                     FormField(label: "Password",
                               placeholder: "",
                               isSecureTextEntry: true,
                               text: $password)
-                        .frame(maxWidth: 300)
+                    .frame(maxWidth: 300)
                     Button {
                         Task {
-                            try await vm.login(email: email, password: password)
+                            await vm.login(email: email, password: password)
                         }
                     } label: {
                         CustomButton(label: "Sign in with Mail", iconName: "envelope.fill")
@@ -46,7 +46,7 @@ struct AuthView: View {
                         .foregroundStyle(.customColorTextForm)
                         .font(.caption)
                     Button {
-                        // vue signUp à implementer
+                        isShowingRegisterSheet = true
                     } label: {
                         CustomButton(label: "Sign Up", iconName: "person.badge.plus")
                             .padding(10)
@@ -56,13 +56,13 @@ struct AuthView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.customColorBackground))
-            .navigationDestination(isPresented: $vm.isAuthenticated) {
-                MainTabView()
-                    .navigationBarBackButtonHidden(true)
-            }
+        }
+        .sheet(isPresented: $isShowingRegisterSheet) {
+            RegisterView(vm: vm)
         }
     }
 }
+
 
 struct EventoriasLogo: View {
     var body: some View {

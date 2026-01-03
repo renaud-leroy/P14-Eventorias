@@ -20,12 +20,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct EventoriasApp: App {
+    @State private var authVM = AuthViewModel(isAuthenticated: false , authService: AuthService())
     // register app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     var body: some Scene {
         WindowGroup {
-            AuthView(vm: AuthViewModel(isAuthenticated: false, authService: AuthService()))
+            RootView(vm: authVM)
         }
     }
 }

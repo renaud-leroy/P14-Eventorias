@@ -13,6 +13,7 @@ import Observation
 final class AuthViewModel {
     var isAuthenticated: Bool = false
     var errorMessage: String?
+    var confirmPassword: String = ""
     
     var authService: AuthServiceProtocol
     
@@ -22,7 +23,7 @@ final class AuthViewModel {
         self.authService = authService
     }
     
-    func login(email: String, password: String) async throws {
+    func login(email: String, password: String) async {
         do {
             try await authService.signIn(email: email, password: password)
             isAuthenticated = true
@@ -40,5 +41,27 @@ final class AuthViewModel {
         } catch {
             errorMessage = "Sign out failed"
         }
+    }
+    
+    func register(email: String, password: String) async {
+        do {
+            guard verifyPassword(password: password, confirmPassword: confirmPassword) else {
+                return
+            }
+            
+            try await authService.createUser(email: email, password: password)
+            isAuthenticated = true
+        } catch {
+            errorMessage = "Registration failed"
+        }
+    }
+    
+    func verifyPassword(password: String, confirmPassword: String) -> Bool {
+        guard password == confirmPassword else {
+            errorMessage = "Passwords do not match"
+            return false
+        }
+        errorMessage = nil
+        return true
     }
 }
