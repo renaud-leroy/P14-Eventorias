@@ -7,14 +7,24 @@
 
 import Foundation
 
-struct Event {
+struct Event: Identifiable {
+    let id: UUID
     let title: String
-    let date: String
-    let avatar: String
-    let cover: String
     let description: String
+    let date: Date
     let address: String
-    let time: String
+    let category: EventCategory
+    let imageURL: String?
 }
 
+enum EventCategory: String, CaseIterable {
+    case music = "Music"
+    case art = "Art"
+    case technology = "Technology"
+    case food = "Food"
+    case literature = "Literature"
+    case cinema = "Cinema"
+    case sport = "Sport"
 
+    var id: String { rawValue }
+}

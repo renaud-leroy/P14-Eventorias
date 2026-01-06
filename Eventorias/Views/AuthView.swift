@@ -25,6 +25,7 @@ struct AuthView: View {
                               isSecureTextEntry: false,
                               text: $email)
                     .frame(maxWidth: 300)
+                    .textInputAutocapitalization(.never)
                     FormField(label: "Password",
                               placeholder: "",
                               isSecureTextEntry: true,

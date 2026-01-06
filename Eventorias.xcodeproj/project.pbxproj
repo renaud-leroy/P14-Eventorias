@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A13366F2F0C8F7300C69948 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 9A13366E2F0C8F7300C69948 /* FirebaseStorage */; };
 		9AC62AC52F04AF2D006C478B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9AC62AC42F04AF2D006C478B /* FirebaseAnalytics */; };
 		9AC62AC72F04AF2D006C478B /* FirebaseAnalyticsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9AC62AC62F04AF2D006C478B /* FirebaseAnalyticsCore */; };
 		9AC62AC92F04AF2D006C478B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9AC62AC82F04AF2D006C478B /* FirebaseAuth */; };
@@ -65,6 +66,7 @@
 				9AC62AC52F04AF2D006C478B /* FirebaseAnalytics in Frameworks */,
 				9AC62AC92F04AF2D006C478B /* FirebaseAuth in Frameworks */,
 				9AC62ACB2F04AF2D006C478B /* FirebaseCore in Frameworks */,
+				9A13366F2F0C8F7300C69948 /* FirebaseStorage in Frameworks */,
 				9AC62ACD2F04AF2D006C478B /* FirebaseFirestore in Frameworks */,
 				9AC62AC72F04AF2D006C478B /* FirebaseAnalyticsCore in Frameworks */,
 			);
@@ -87,12 +89,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9A13366D2F0C8F7300C69948 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9AC62A8E2F04A912006C478B = {
 			isa = PBXGroup;
 			children = (
 				9AC62A992F04A912006C478B /* Eventorias */,
 				9AC62AA72F04A914006C478B /* EventoriasTests */,
 				9AC62AB12F04A914006C478B /* EventoriasUITests */,
+				9A13366D2F0C8F7300C69948 /* Frameworks */,
 				9AC62A982F04A912006C478B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -133,6 +143,7 @@
 				9AC62ACA2F04AF2D006C478B /* FirebaseCore */,
 				9AC62ACC2F04AF2D006C478B /* FirebaseFirestore */,
 				9AC62ACE2F04AF2D006C478B /* FirebaseMessaging */,
+				9A13366E2F0C8F7300C69948 /* FirebaseStorage */,
 			);
 			productName = Eventorias;
 			productReference = 9AC62A972F04A912006C478B /* Eventorias.app */;
@@ -424,6 +435,7 @@
 				DEVELOPMENT_TEAM = HZAZV43ASV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Cette application a besoin d’accéder à la caméra pour ajouter une photo à un événement.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -456,6 +468,7 @@
 				DEVELOPMENT_TEAM = HZAZV43ASV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Cette application a besoin d’accéder à la caméra pour ajouter une photo à un événement.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -615,6 +628,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		9A13366E2F0C8F7300C69948 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AC62AC32F04AF2D006C478B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
 		9AC62AC42F04AF2D006C478B /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9AC62AC32F04AF2D006C478B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

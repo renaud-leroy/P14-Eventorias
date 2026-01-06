@@ -15,27 +15,37 @@ struct EventDetailView: View {
             Color(.customColorBackground)
                 .ignoresSafeArea()
             VStack (spacing: 30) {
-                Image(event.cover)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(maxWidth: 360)
-                    .frame(maxHeight: 360)
+                if let imageURL = event.imageURL,
+                   let url = URL(string: imageURL) {
+                    AsyncImage(url: url) { image in
+                        image
+                            .resizable()
+                            .scaledToFill()
+                    } placeholder: {
+                        Color.gray.opacity(0.3)
+                    }
+                    .frame(width: 360, height: 360)
                     .clipped()
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .cornerRadius(14)
+                } else {
+                    Color.gray.opacity(0.3)
+                        .frame(width: 360, height: 360)
+                        .cornerRadius(14)
+                }
                 HStack {
                     VStack(alignment: .leading, spacing: 10) {
                         HStack {
                             Image(systemName: "calendar")
-                            Text(event.date)
+                            Text(event.date, style: .date)
                         }
                         HStack {
                             Image(systemName: "clock")
-                            Text(event.time)
+                            Text("16h - 20h")
                         }
                     }
                     .font(.headline)
                     Spacer()
-                    Image(event.avatar)
+                    Image(systemName: "person.circle")
                         .resizable()
                         .scaledToFill()
                         .frame(width: 44, height: 44)
@@ -76,10 +86,3 @@ struct EventDetailView: View {
         .foregroundStyle(Color(.customWhite))
     }
 }
-
-#Preview {
-    let event = Event(title: "Music festival", date: "June 15, 2024", avatar: "avatar", cover: "imageEvent", description: "Join us for an exclusive Art Exhibition showcasing the works of the talented artist Emily Johnson. This exhibition will feature a captivating collection of her contemporary and classical pieces, offering a unique insight into her creative journey. Whether you're an art enthusiast or a casual visitor, you'll have the chance to explore a diverse range of artworks.", address: "123 Rue de l'Art, Quartier des Galeries, Paris, 75003, France", time: "10:00 AM")
-    EventDetailView(event: event)
-}
-
-
