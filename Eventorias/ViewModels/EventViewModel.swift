@@ -57,6 +57,8 @@ final class EventViewModel {
     }
     
     func createEvent(title: String, description: String, date: Date, address: String, category: EventCategory, image: UIImage?) async throws {
+        isLoading = true
+        
         let event = Event(
             id: UUID(),
             title: title,
@@ -66,10 +68,20 @@ final class EventViewModel {
             category: category,
             imageURL: nil
         )
-
-        try await repository.createEvent(event, image: image)
-
-        eventsList.append(event)
-        applyFilter(query: query)
+        
+        do {
+            try await repository.createEvent(event, image: image)
+            eventsList.append(event)
+            applyFilter(query: query)
+            
+            NotificationService.shared.eventReminder(
+                title: event.title,
+                date: event.date
+            )
+        } catch {
+            errorMessage = "Failed to create event"
+            throw error
+        }
+        isLoading = false
     }
 }

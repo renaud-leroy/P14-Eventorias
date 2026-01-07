@@ -41,7 +41,7 @@ struct ProfileView: View {
                             .foregroundColor(.white)
                     }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Image("avatar5")
+                    Image(systemName: "person.circle")
                         .resizable()
                         .scaledToFill()
                         .frame(width: 36, height: 36)

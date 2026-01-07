@@ -12,6 +12,7 @@ struct EventListView: View {
     @State private var isShowingCreateEvent = false
     @State private var searchQuery: String = ""
     @State private var selectedSorting: SortingType = .date
+    @State private var isLoading: Bool = false
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -43,29 +44,36 @@ struct EventListView: View {
                     }
                 }
                 List {
-                    let sortedEvents = vm.filteredEventsList.sorted {
-                        switch selectedSorting {
-                        case .date:
-                            return $0.date < $1.date
-                        case .category:
-                            return $0.category.rawValue < $1.category.rawValue
+                    if vm.isLoading {
+                        LoadingListView()
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
+                    } else {
+                        let sortedEvents = vm.filteredEventsList.sorted {
+                            switch selectedSorting {
+                            case .date:
+                                return $0.date < $1.date
+                            case .category:
+                                return $0.category.rawValue < $1.category.rawValue
+                            }
                         }
-                    }
-                    ForEach(sortedEvents) { event in
-                        NavigationLink {
-                            EventDetailView(event: event)
-                        } label: {
-                            EventRow(event: event)
+
+                        ForEach(sortedEvents) { event in
+                            NavigationLink {
+                                EventDetailView(event: event)
+                            } label: {
+                                EventRow(event: event)
+                            }
+                            .listRowInsets(EdgeInsets(
+                                top: 6,
+                                leading: 0,
+                                bottom: 6,
+                                trailing: 0
+                            ))
+                            .buttonStyle(.plain)
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
                         }
-                        .listRowInsets(EdgeInsets(
-                            top: 6,
-                            leading: 0,
-                            bottom: 6,
-                            trailing: 0
-                        ))
-                        .buttonStyle(.plain)
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
                     }
                 }
                 .task {
@@ -76,6 +84,7 @@ struct EventListView: View {
             }
             .refreshable(action: {
                 await vm.loadEvents()
+                vm.applyFilter(query: searchQuery)
             })
             .padding()
             .scrollIndicators(.hidden)
@@ -93,6 +102,7 @@ struct EventListView: View {
                     .padding(16)
             }
         }
+        .animation(.easeInOut, value: vm.isLoading)
     }
 }
 

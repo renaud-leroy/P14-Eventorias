@@ -70,7 +70,9 @@ struct CreateEventView: View {
                         .foregroundStyle(.white)
                         .fontWeight(.bold)
                 }
+                .disabled(vm.isLoading)
             }
+            .padding(.top, 40)
             .padding()
             .sheet(isPresented: $showingCamera) {
                 CameraView(image: $selectedImage)
@@ -85,7 +87,11 @@ struct CreateEventView: View {
                     }
                 }
             }
+            if vm.isLoading {
+                LoadingCreatingEventView()
+            }
         }
+        .animation(.easeInOut, value: vm.isLoading)
     }
 }
 
