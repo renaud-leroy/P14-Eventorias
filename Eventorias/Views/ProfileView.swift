@@ -6,24 +6,28 @@
 //
 
 import SwiftUI
+import UserNotifications
+import PhotosUI
 
 struct ProfileView: View {
+    @Bindable var ProfileVM: ProfileViewModel
     @State private var text: String = ""
-    @State private var name: String = ""
-    @State private var email: String = ""
-    @State private var isNotificationOn: Bool = true
     
     var body: some View {
         ZStack {
             Color(.customColorBackground)
                 .ignoresSafeArea()
             VStack(spacing: 26) {
-                FormField(label: "Name", placeholder: "Christopher Evan", isSecureTextEntry: false, text: $name)
-                FormField(label: "Email", placeholder: "christopherevans@gmail.com", isSecureTextEntry: false, text: $email)
+                FormField(label: "Name", placeholder: ProfileVM.name, isSecureTextEntry: false, text: $ProfileVM.name)
+                FormField(label: "Email", placeholder: ProfileVM.email, isSecureTextEntry: false, text: $ProfileVM.email)
                 HStack(spacing: 20) {
-                    Toggle("", isOn: $isNotificationOn)
+                    Toggle("", isOn: $ProfileVM.isNotificationOn)
                         .tint(Color(.customRed))
                         .labelsHidden()
+                        .onChange(of: ProfileVM.isNotificationOn) { _, newValue in
+                            if newValue {
+                                ProfileVM.enableNotifications()                            }
+                        }
                     Text("Notifications")
                         .font(.subheadline)
                         .foregroundStyle(.white)
@@ -33,6 +37,9 @@ struct ProfileView: View {
                     .padding(.vertical)
             }
             .padding()
+            .onAppear() {
+                ProfileVM.loadUser()
+            }
             .toolbar {
                 ToolbarItem(placement: .principal) {
                         Text("User profile")
@@ -53,5 +60,5 @@ struct ProfileView: View {
 }
 
 #Preview {
-    ProfileView()
+    ProfileView(ProfileVM: ProfileViewModel())
 }

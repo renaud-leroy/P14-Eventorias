@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @State var EventVM = EventViewModel()
+    @State var ProfileVM = ProfileViewModel()
     var body: some View {
         TabView {
-            EventsNavigation(vm: EventViewModel())
+            EventsNavigation(EventVM: EventVM)
                 .tabItem {
                     Label("Events", systemImage: "calendar")
                 }
 
-            ProfileNavigation()
+            ProfileNavigation(ProfileVM: ProfileVM)
                 .tabItem {
                     Label("Profile", systemImage: "person")
                 }

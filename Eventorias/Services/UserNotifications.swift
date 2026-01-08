@@ -19,28 +19,33 @@ final class NotificationService {
     }
     
     func eventReminder(title: String, date: Date) {
-        let content = UNMutableNotificationContent()
-        content.title = "Rappel"
-        content.body = title
+            let reminderDate = Calendar.current.date(
+                byAdding: .minute,
+                value: -10,
+                to: date
+            )
 
-        guard let triggerDate = Calendar.current.date(byAdding: .minute, value: -10, to: date) else {
-            return
+            guard let reminderDate,
+                  reminderDate > Date() else {
+                print("Date passée")
+                return
+            }
+            
+            let content = UNMutableNotificationContent()
+            content.title = "Rappel d'événement"
+            content.body = "⏰ \(title) commence dans 10 minutes"
+            content.sound = .default
+            
+            let trigger = UNTimeIntervalNotificationTrigger(
+                timeInterval: reminderDate.timeIntervalSinceNow,
+                repeats: false
+            )
+            let identifier = UUID().uuidString
+            let request = UNNotificationRequest(
+                identifier: identifier,
+                content: content,
+                trigger: trigger
+            )
+            UNUserNotificationCenter.current().add(request)
         }
-
-        let trigger = UNCalendarNotificationTrigger(
-            dateMatching: Calendar.current.dateComponents(
-                [.year, .month, .day, .hour, .minute],
-                from: triggerDate
-            ),
-            repeats: false
-        )
-
-        let request = UNNotificationRequest(
-            identifier: UUID().uuidString,
-            content: content,
-            trigger: trigger
-        )
-
-        UNUserNotificationCenter.current().add(request)
-    }
 }

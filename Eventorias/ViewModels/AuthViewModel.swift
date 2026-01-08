@@ -28,9 +28,6 @@ final class AuthViewModel {
             try await authService.signIn(email: email, password: password)
             isAuthenticated = true
             errorMessage = nil
-            
-            NotificationService.shared.requestAuthorization()
-            
         } catch {
             isAuthenticated = false
             errorMessage = "Connection failed"

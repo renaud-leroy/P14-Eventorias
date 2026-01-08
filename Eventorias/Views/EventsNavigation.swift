@@ -8,14 +8,11 @@
 import SwiftUI
 
 struct EventsNavigation: View {
-    let vm: EventViewModel
+    let EventVM: EventViewModel
     var body: some View {
         NavigationStack {
-            EventListView(vm: vm)
+            EventListView(vm: EventVM)
         }
     }
 }
 
-#Preview {
-    EventsNavigation(vm: EventViewModel())
-}

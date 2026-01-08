@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct ProfileNavigation: View {
+    let ProfileVM: ProfileViewModel
     var body: some View {
         NavigationStack {
-            ProfileView()
+            ProfileView(ProfileVM: ProfileVM)
         }
     }
 }
 
-#Preview {
-    ProfileNavigation()
-}
+
