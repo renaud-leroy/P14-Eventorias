@@ -166,5 +166,5 @@ struct PickerButton: View {
 }
 
 #Preview {
-    CreateEventView(vm: EventViewModel())
+    CreateEventView(vm: EventViewModel(repository: EventRepository()))
 }

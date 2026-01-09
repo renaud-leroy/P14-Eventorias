@@ -7,9 +7,12 @@
 
 import SwiftUI
 
+@MainActor
 struct MainTabView: View {
-    @State var EventVM = EventViewModel()
-    @State var ProfileVM = ProfileViewModel()
+    
+    @State var EventVM = EventViewModel(repository: EventRepository())
+    @State var ProfileVM = ProfileViewModel(profileService: ProfileService())
+    
     var body: some View {
         TabView {
             EventsNavigation(EventVM: EventVM)

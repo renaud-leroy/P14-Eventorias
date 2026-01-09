@@ -57,7 +57,7 @@ struct EventListView: View {
                                 return $0.category.rawValue < $1.category.rawValue
                             }
                         }
-
+                        
                         ForEach(sortedEvents) { event in
                             NavigationLink {
                                 EventDetailView(event: event)
@@ -77,7 +77,7 @@ struct EventListView: View {
                     }
                 }
                 .task {
-                    await vm.loadEvents()
+                    await vm.loadEventsIfNeeded()
                     vm.applyFilter(query: searchQuery)
                 }
                 
@@ -91,7 +91,6 @@ struct EventListView: View {
             .navigationLinkIndicatorVisibility(.hidden)
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
-            .background(Color.customColorBackground)
             .sheet(isPresented: $isShowingCreateEvent) {
                 CreateEventView(vm: vm)
             }
@@ -158,7 +157,6 @@ enum SortingType: String, CaseIterable {
 }
 
 
-
 #Preview {
-    EventListView(vm: EventViewModel())
+    EventListView(vm: EventViewModel(repository: EventRepository()))
 }

@@ -12,6 +12,7 @@ struct EventsNavigation: View {
     var body: some View {
         NavigationStack {
             EventListView(vm: EventVM)
+                .background(Color(.customColorBackground))
         }
     }
 }

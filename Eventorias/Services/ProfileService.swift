@@ -10,10 +10,34 @@ import FirebaseAuth
 import FirebaseStorage
 import UIKit
 
-final class ProfileService {
+protocol ProfileServiceProtocol {
+    func fetchCurrentUser() async -> ProfileUser?
+    func uploadProfileImage(_ image: UIImage) async -> URL?
+    func updateProfile(username: String, photoURL: URL?)
+    func fetchProfileImage(from url: URL) async -> UIImage?
+}
 
-    static let shared = ProfileService()
-    private init() {}
+final class ProfileService: ProfileServiceProtocol {
+
+    func fetchCurrentUser() async -> ProfileUser? {
+        guard let user = Auth.auth().currentUser else { return nil }
+
+        let email = user.email ?? ""
+        let displayName = user.displayName ?? ""
+        let photoURL = user.photoURL
+
+        return ProfileUser(email: email, displayName: displayName, photoURL: photoURL)
+    }
+
+    func fetchProfileImage(from url: URL) async -> UIImage? {
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            return UIImage(data: data)
+        } catch {
+            print("Avatar loading error")
+            return nil
+        }
+    }
 
     func uploadProfileImage(_ image: UIImage) async -> URL? {
         guard let uid = Auth.auth().currentUser?.uid,

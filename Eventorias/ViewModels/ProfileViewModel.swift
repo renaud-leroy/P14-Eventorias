@@ -6,35 +6,43 @@
 //
 
 import Foundation
-import FirebaseAuth
 import UserNotifications
 import SwiftUI
 
 @MainActor
 @Observable
 final class ProfileViewModel {
-    var name: String = ""
-    var email: String = ""
+
+    var name = ""
+    var email = ""
+    var profileImage: UIImage?
     var isNotificationOn: Bool = false
+    var showPhotoPicker: Bool = false
 
-    func loadUser() {
-        guard let user = Auth.auth().currentUser else {
-            return
-        }
+    private let profileService: ProfileServiceProtocol
 
-        email = user.email ?? ""
+    init(profileService: ProfileServiceProtocol) {
+        self.profileService = profileService
+    }
 
-        if let displayName = user.displayName, !displayName.isEmpty {
-            name = displayName
-        } else if let mail = user.email,
-                  let prefix = mail.split(separator: "@").first {
-            name = String(prefix)
-        } else {
-            name = "John Doe"
+    func loadUser() async {
+        guard let user = await profileService.fetchCurrentUser() else { return }
+
+        email = user.email
+        name = user.displayName
+
+        if let imageURL = user.photoURL {
+            profileImage = await profileService.fetchProfileImage(from: imageURL)
         }
     }
-    
+
+    func updateProfileImage(_ image: UIImage) async {
+        guard let url = await profileService.uploadProfileImage(image) else { return }
+        profileService.updateProfile(username: name, photoURL: url)
+        profileImage = image
+    }
+
     func enableNotifications() {
-            NotificationService.shared.requestAuthorization()
+        NotificationService.shared.requestAuthorization()
     }
 }

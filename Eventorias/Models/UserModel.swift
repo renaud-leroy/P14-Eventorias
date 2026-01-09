@@ -7,10 +7,8 @@
 
 import Foundation
 
-struct User: Codable {
-    let id: Int
-    let firstName: String
-    let lastName: String
+struct ProfileUser {
     let email: String
-    let token: String
+    let displayName: String
+    let photoURL: URL?
 }

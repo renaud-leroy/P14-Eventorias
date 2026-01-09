@@ -1,5 +1,5 @@
 //
-//  UserNotifications.swift
+//  NotificationService.swift
 //  Eventorias
 //
 //  Created by Renaud Leroy on 07/01/2026.
@@ -33,7 +33,7 @@ final class NotificationService {
             
             let content = UNMutableNotificationContent()
             content.title = "Rappel d'événement"
-            content.body = "⏰ \(title) commence dans 10 minutes"
+            content.body = "\(title) commence dans 10 minutes"
             content.sound = .default
             
             let trigger = UNTimeIntervalNotificationTrigger(

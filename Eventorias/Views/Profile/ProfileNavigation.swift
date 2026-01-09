@@ -12,6 +12,7 @@ struct ProfileNavigation: View {
     var body: some View {
         NavigationStack {
             ProfileView(ProfileVM: ProfileVM)
+                .background(Color(.customColorBackground))
         }
     }
 }

@@ -34,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9A1337F62F10A55A00C69948 /* Eventorias.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Eventorias.xctestplan; sourceTree = "<group>"; };
 		9AC62A972F04A912006C478B /* Eventorias.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Eventorias.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AC62AA42F04A914006C478B /* EventoriasTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EventoriasTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AC62AAE2F04A914006C478B /* EventoriasUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EventoriasUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,6 +100,7 @@
 		9AC62A8E2F04A912006C478B = {
 			isa = PBXGroup;
 			children = (
+				9A1337F62F10A55A00C69948 /* Eventorias.xctestplan */,
 				9AC62A992F04A912006C478B /* Eventorias */,
 				9AC62AA72F04A914006C478B /* EventoriasTests */,
 				9AC62AB12F04A914006C478B /* EventoriasUITests */,

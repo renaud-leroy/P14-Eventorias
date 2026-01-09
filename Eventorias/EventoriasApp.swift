@@ -27,6 +27,7 @@ struct EventoriasApp: App {
     var body: some Scene {
         WindowGroup {
             RootView(AuthVM: AuthVM)
+                .preferredColorScheme(.dark)
         }
     }
 }

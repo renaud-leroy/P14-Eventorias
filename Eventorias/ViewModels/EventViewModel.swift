@@ -21,9 +21,10 @@ final class EventViewModel {
     var query: String = ""
     var isLoading: Bool = false
     var errorMessage: String?
+    private var alreadyLoaded = false
     
-    init() {
-        self.repository = EventRepository()
+    init(repository: EventRepositoryProtocol) {
+        self.repository = repository
     }
   
     func loadEvents() async {
@@ -35,6 +36,12 @@ final class EventViewModel {
             self.errorMessage = "Failed to load events"
         }
         isLoading = false
+    }
+    
+    func loadEventsIfNeeded() async {
+        guard !alreadyLoaded else { return }
+        alreadyLoaded = true
+        await loadEvents()
     }
     
     func applyFilter(query: String, category: EventCategory? = nil, date: Date? = nil) {
