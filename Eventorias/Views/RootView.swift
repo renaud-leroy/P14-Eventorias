@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct RootView: View {
-    let AuthVM: AuthViewModel
+    let authVM: AuthViewModel
 
     var body: some View {
-        if AuthVM.isAuthenticated {
+        if authVM.isAuthenticated {
             MainTabView()
         } else {
-            AuthView(vm: AuthVM)
+            AuthView(vm: authVM)
         }
     }
 }

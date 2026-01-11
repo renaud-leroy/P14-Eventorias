@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct EventsNavigation: View {
-    let EventVM: EventViewModel
+    let eventVM: EventViewModel
     var body: some View {
         NavigationStack {
-            EventListView(vm: EventVM)
+            EventListView(vm: eventVM)
                 .background(Color(.customColorBackground))
         }
     }

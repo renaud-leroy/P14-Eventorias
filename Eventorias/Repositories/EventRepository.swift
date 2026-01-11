@@ -63,6 +63,7 @@ final class EventRepository: EventRepositoryProtocol {
                 .child("events/\(eventId.uuidString).jpg")
 
             _ = try await reference.putDataAsync(data)
+        
             let url = try await reference.downloadURL()
 
             return url.absoluteString
@@ -70,7 +71,7 @@ final class EventRepository: EventRepositoryProtocol {
     
     func createEvent(_ event: Event, image: UIImage?) async throws {
 
-        var imageURL: String? = nil
+        var imageURL: String? = event.imageURL
 
         if let image {
             imageURL = try await uploadImage(image, eventId: event.id)

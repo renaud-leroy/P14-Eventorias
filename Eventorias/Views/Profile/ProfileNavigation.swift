@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct ProfileNavigation: View {
-    let ProfileVM: ProfileViewModel
+    let profileVM: ProfileViewModel
     var body: some View {
         NavigationStack {
-            ProfileView(ProfileVM: ProfileVM)
+            ProfileView(profileVM: profileVM)
                 .background(Color(.customColorBackground))
         }
     }

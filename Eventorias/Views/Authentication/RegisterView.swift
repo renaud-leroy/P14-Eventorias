@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct RegisterView: View {
-    let vm: AuthViewModel
+    @Bindable var vm: AuthViewModel
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var confirmPassword: String = ""
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -26,7 +25,7 @@ struct RegisterView: View {
                     .padding(30)
                 FormField(label: "Email", placeholder: "", isSecureTextEntry: false, text: $email)
                 FormField(label: "Password", placeholder: "", isSecureTextEntry: true, text: $password)
-                FormField(label: "Confirmation", placeholder: "", isSecureTextEntry: true, text: $confirmPassword)
+                FormField(label: "Confirmation", placeholder: "", isSecureTextEntry: true, text: $vm.confirmPassword)
                 Button {
                    Task {
                         await vm.register(email: email, password: password)

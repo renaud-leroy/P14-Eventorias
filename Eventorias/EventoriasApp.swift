@@ -7,8 +7,8 @@
 
 import SwiftUI
 import FirebaseCore
-import FirebaseAnalytics
 
+@MainActor
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
@@ -20,13 +20,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct EventoriasApp: App {
-    @State private var AuthVM = AuthViewModel(isAuthenticated: false , authService: AuthService())
+    @State private var authVM = AuthViewModel(isAuthenticated: false , authService: AuthService())
     // register app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     var body: some Scene {
         WindowGroup {
-            RootView(AuthVM: AuthVM)
+            RootView(authVM: authVM)
                 .preferredColorScheme(.dark)
         }
     }

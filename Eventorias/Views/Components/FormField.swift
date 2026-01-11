@@ -36,10 +36,3 @@ struct FormField: View {
     }
 }
 
-#Preview("FormField") {
-    ZStack {
-        Color.customColorBackground.ignoresSafeArea()
-        FormField(label: "Title", placeholder: "New event", isSecureTextEntry: false, text: .init(get: {""}, set: {_ in}))
-            .padding()
-    }
-}

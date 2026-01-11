@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AuthView: View {
-    let vm: AuthViewModel
+    @Bindable var vm: AuthViewModel
     @State private var isShowingRegisterSheet: Bool = false
     @State private var email: String = ""
     @State private var password: String = ""
@@ -61,6 +61,7 @@ struct AuthView: View {
         .sheet(isPresented: $isShowingRegisterSheet) {
             RegisterView(vm: vm)
         }
+        .errorAlert(message: $vm.errorMessage)
     }
 }
 

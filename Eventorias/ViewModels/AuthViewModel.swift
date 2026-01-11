@@ -14,7 +14,6 @@ final class AuthViewModel {
     var isAuthenticated: Bool = false
     var errorMessage: String?
     var confirmPassword: String = ""
-    
     var authService: AuthServiceProtocol
     
     init(isAuthenticated: Bool, errorMessage: String? = nil, authService: AuthServiceProtocol) {

@@ -18,15 +18,26 @@ final class ProfileViewModel {
     var profileImage: UIImage?
     var isNotificationOn: Bool = false
     var showPhotoPicker: Bool = false
+    var errorMessage: String?
+    private var alreadyLoaded: Bool = false
 
     private let profileService: ProfileServiceProtocol
 
     init(profileService: ProfileServiceProtocol) {
         self.profileService = profileService
     }
-
+    
+    func loadUserIfNeeded() async {
+        guard !alreadyLoaded else { return }
+        alreadyLoaded = true
+        await loadUser()
+    }
+    
     func loadUser() async {
-        guard let user = await profileService.fetchCurrentUser() else { return }
+        guard let user = await profileService.fetchCurrentUser() else { 
+            errorMessage = "Unable to load user profile"
+            return
+        }
 
         email = user.email
         name = user.displayName
@@ -37,7 +48,10 @@ final class ProfileViewModel {
     }
 
     func updateProfileImage(_ image: UIImage) async {
-        guard let url = await profileService.uploadProfileImage(image) else { return }
+        guard let url = await profileService.uploadProfileImage(image) else {
+            errorMessage = "Unable to update profile image"
+            return
+        }
         profileService.updateProfile(username: name, photoURL: url)
         profileImage = image
     }

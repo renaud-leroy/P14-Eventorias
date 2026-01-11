@@ -15,7 +15,6 @@ import FirebaseStorage
 final class EventViewModel {
     
     private let repository: EventRepositoryProtocol
-    
     var eventsList : [Event] = []
     var filteredEventsList : [Event] = []
     var query: String = ""
@@ -65,22 +64,30 @@ final class EventViewModel {
     
     func createEvent(title: String, description: String, date: Date, address: String, category: EventCategory, image: UIImage?) async throws {
         isLoading = true
-        
-        let event = Event(
-            id: UUID(),
-            title: title,
-            description: description,
-            date: date,
-            address: address,
-            category: category,
-            imageURL: nil
-        )
-        
+
+        let eventId = UUID()
+        var imageURL: String?
+
         do {
-            try await repository.createEvent(event, image: image)
+            if let image {
+                imageURL = try await repository.uploadImage(image, eventId: eventId)
+            }
+
+            let event = Event(
+                id: eventId,
+                title: title,
+                description: description,
+                date: date,
+                address: address,
+                category: category,
+                imageURL: imageURL
+            )
+
+            try await repository.createEvent(event, image: nil)
+
             eventsList.append(event)
             applyFilter(query: query)
-            
+
             NotificationService.shared.eventReminder(
                 title: event.title,
                 date: event.date

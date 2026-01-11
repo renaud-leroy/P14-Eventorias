@@ -8,14 +8,19 @@
 import Foundation
 import UserNotifications
 
-final class NotificationService {
-    static let shared = NotificationService()
+protocol NotificationServiceProtocol {
+    func requestAuthorization()
+    func eventReminder(title: String, date: Date)
+}
+
+final class NotificationService: NotificationServiceProtocol {
+    static let shared: NotificationServiceProtocol = NotificationService()
     private init() {}
     
     func requestAuthorization() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
-            guard error == nil else { return }
-        }
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: [.alert, .badge, .sound]
+        ) { _, _ in }
     }
     
     func eventReminder(title: String, date: Date) {
@@ -27,13 +32,12 @@ final class NotificationService {
 
             guard let reminderDate,
                   reminderDate > Date() else {
-                print("Date passée")
                 return
             }
             
             let content = UNMutableNotificationContent()
-            content.title = "Rappel d'événement"
-            content.body = "\(title) commence dans 10 minutes"
+            content.title = "Event reminder"
+            content.body = "\(title) starts in 10 minutes"
             content.sound = .default
             
             let trigger = UNTimeIntervalNotificationTrigger(

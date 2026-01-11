@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct EventListView: View {
-    let vm: EventViewModel
+    @Bindable var vm: EventViewModel
     @State private var isShowingCreateEvent = false
     @State private var searchQuery: String = ""
     @State private var selectedSorting: SortingType = .date
-    @State private var isLoading: Bool = false
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -57,7 +56,6 @@ struct EventListView: View {
                                 return $0.category.rawValue < $1.category.rawValue
                             }
                         }
-                        
                         ForEach(sortedEvents) { event in
                             NavigationLink {
                                 EventDetailView(event: event)
@@ -102,6 +100,7 @@ struct EventListView: View {
             }
         }
         .animation(.easeInOut, value: vm.isLoading)
+        .errorAlert(message: $vm.errorMessage)
     }
 }
 
@@ -112,42 +111,6 @@ struct AddEventButton: View {
             .foregroundStyle(Color.white)
             .background(.customRed)
             .cornerRadius(16)
-    }
-}
-
-struct ErrorView: View {
-    let retryAction: () -> Void
-    var body: some View {
-        VStack(spacing: 20) {
-            ZStack {
-                Circle()
-                    .fill(Color(.customGrey))
-                    .frame(width: 64, height: 64)
-                Text("!")
-                    .font(.title)
-                    .fontWeight(.bold)
-            }
-            Text("Error")
-                .font(.title2)
-                .fontWeight(.semibold)
-            Text("An error has occurred,\nplease try again later")
-                .font(.body)
-                .multilineTextAlignment(.center)
-            TryAgainButton()
-        }
-        .foregroundColor(.white)
-        .background(.customColorBackground)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
-
-struct TryAgainButton: View {
-    var body: some View {
-        Text("Try again")
-            .frame(width: 150, height: 55)
-            .foregroundStyle(Color.white)
-            .background(.customRed)
-            .cornerRadius(4)
     }
 }
 

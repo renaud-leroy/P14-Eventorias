@@ -9,18 +9,24 @@ import SwiftUI
 import PhotosUI
 
 struct CreateEventView: View {
-    
-    let vm: EventViewModel
+
+    @Bindable var vm: EventViewModel
     @State private var title = ""
     @State private var description = ""
     @State private var eventDate: Date = .now
     @State private var address = ""
     @State private var category: EventCategory = .music
-    @State private var text: String = ""
     @State private var showingCamera = false
     @State private var selectedItem: PhotosPickerItem?
     @State private var selectedImage: UIImage?
     @Environment(\.dismiss) var dismiss
+
+    private var isFormValid: Bool {
+        !title.trimmingCharacters(in: .whitespaces).isEmpty &&
+        !description.trimmingCharacters(in: .whitespaces).isEmpty &&
+        !address.trimmingCharacters(in: .whitespaces).isEmpty
+    }
+  
     
     var body: some View {
         ZStack {
@@ -59,18 +65,17 @@ struct CreateEventView: View {
                             try await vm.createEvent(title: title, description: description, date: eventDate, address: address, category: category, image: selectedImage)
                             dismiss()
                         } catch {
-                            print("erreur de creation")
                         }
                     }
                 } label: {
                     Text("Validate")
                         .frame(maxWidth: .infinity, maxHeight: 50)
-                        .background(Color.customRed)
+                        .background(isFormValid ? Color.customRed : Color.gray)
                         .cornerRadius(4)
                         .foregroundStyle(.white)
                         .fontWeight(.bold)
                 }
-                .disabled(vm.isLoading)
+                .disabled(!isFormValid || vm.isLoading)
             }
             .padding(.top, 40)
             .padding()
@@ -92,6 +97,7 @@ struct CreateEventView: View {
             }
         }
         .animation(.easeInOut, value: vm.isLoading)
+        .errorAlert(message: $vm.errorMessage)
     }
 }
 

@@ -10,20 +10,20 @@ import UserNotifications
 import PhotosUI
 
 struct ProfileView: View {
-    @Bindable var ProfileVM: ProfileViewModel
+    @Bindable var profileVM: ProfileViewModel
     @State private var selectedPhoto: PhotosPickerItem?
     
     var body: some View {
         VStack(spacing: 26) {
-            FormField(label: "Name", placeholder: ProfileVM.name, isSecureTextEntry: false, text: $ProfileVM.name)
-            FormField(label: "Email", placeholder: ProfileVM.email, isSecureTextEntry: false, text: $ProfileVM.email)
+            FormField(label: "Name", placeholder: profileVM.name, isSecureTextEntry: false, text: $profileVM.name)
+            FormField(label: "Email", placeholder: profileVM.email, isSecureTextEntry: false, text: $profileVM.email)
             HStack(spacing: 20) {
-                Toggle("", isOn: $ProfileVM.isNotificationOn)
+                Toggle("", isOn: $profileVM.isNotificationOn)
                     .tint(Color(.customRed))
                     .labelsHidden()
-                    .onChange(of: ProfileVM.isNotificationOn) { _, newValue in
+                    .onChange(of: profileVM.isNotificationOn) { _, newValue in
                         if newValue {
-                            ProfileVM.enableNotifications()
+                            profileVM.enableNotifications()
                         }
                     }
                 Text("Notifications")
@@ -36,19 +36,17 @@ struct ProfileView: View {
                 .background(Color(.customColorBackground))
         }
         .padding()
-        .onAppear {
-            Task {
-                await ProfileVM.loadUser()
-            }
+        .task {
+            await profileVM.loadUserIfNeeded()
         }
         .navigationTitle(Text("User profile"))
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    ProfileVM.showPhotoPicker.toggle()
+                    profileVM.showPhotoPicker.toggle()
                 } label: {
                     Group {
-                        if let image = ProfileVM.profileImage {
+                        if let image = profileVM.profileImage {
                             Image(uiImage: image)
                                 .resizable()
                         } else {
@@ -63,7 +61,7 @@ struct ProfileView: View {
             }
         }
         .photosPicker(
-            isPresented: $ProfileVM.showPhotoPicker,
+            isPresented: $profileVM.showPhotoPicker,
             selection: $selectedPhoto,
             matching: .images
         )
@@ -74,16 +72,18 @@ struct ProfileView: View {
                 do {
                     if let data = try await newItem.loadTransferable(type: Data.self),
                        let image = UIImage(data: data) {
-                        await ProfileVM.updateProfileImage(image)
+                        await profileVM.updateProfileImage(image)
                     }
                 } catch {
-                    print("Erreur sélection photo")
+                    profileVM.errorMessage = "Failed to load selected photo"
                 }
             }
         }
+        .errorAlert(message: $profileVM.errorMessage)
     }
 }
 
 #Preview {
-    ProfileView(ProfileVM: ProfileViewModel(profileService: ProfileService()))
+    ProfileView(profileVM: ProfileViewModel(profileService: ProfileService()))
 }
+
