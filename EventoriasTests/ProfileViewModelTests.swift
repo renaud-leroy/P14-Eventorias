@@ -69,4 +69,65 @@ final class ProfileViewModelTests: XCTestCase {
         // THEN
         XCTAssertTrue(viewModel.showPhotoPicker)
     }
+    
+    func test_loadUser_returnsNameAndEmail() async {
+        // GIVEN
+        service.userToReturn = ProfileUser(email: "test@mail.com", displayName: "JohnDoe", photoURL: nil)
+
+        // WHEN
+        await viewModel.loadUser()
+
+        // THEN
+        XCTAssertEqual(viewModel.name, "JohnDoe")
+        XCTAssertEqual(viewModel.email, "test@mail.com")
+    }
+    
+    func test_loadUserIfNeeded_callsLoadUser_onlyOnce() async {
+        // GIVEN
+        service.userToReturn = ProfileUser(
+            email: "test@mail.com",
+            displayName: "John",
+            photoURL: nil
+        )
+
+        // WHEN
+        await viewModel.loadUserIfNeeded()
+        await viewModel.loadUserIfNeeded()
+
+        // THEN
+        XCTAssertEqual(service.fetchUserCallCount, 1)
+    }
+    
+    func test_loadUser_returnsErrorMessage_whenUserIsNil() async {
+        // GIVEN
+        service.userToReturn = nil
+
+        // WHEN
+        await viewModel.loadUser()
+
+        // THEN
+        XCTAssertEqual(viewModel.errorMessage, "Unable to load user profile")
+        XCTAssertEqual(viewModel.name, "")
+        XCTAssertEqual(viewModel.email, "")
+    }
+    
+    func test_loadUser_fetchesProfileImage_whenPhotoURLExists() async {
+        // GIVEN
+        let url = URL(string: "https://test.com/avatar.png")!
+        service.userToReturn = ProfileUser(
+            email: "test@mail.com",
+            displayName: "John",
+            photoURL: url
+        )
+
+        let expectedImage = UIImage()
+        service.imageToReturn = expectedImage
+
+        // WHEN
+        await viewModel.loadUser()
+
+        // THEN
+        XCTAssertEqual(viewModel.profileImage, expectedImage)
+        XCTAssertTrue(service.didFetchProfileImage)
+    }
 }

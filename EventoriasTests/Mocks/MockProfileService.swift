@@ -13,18 +13,20 @@ import UIKit
 final class MockProfileService: ProfileServiceProtocol {
     
     var userToReturn: ProfileUser?
+    var fetchUserCallCount = 0
     var imageToReturn: UIImage?
-    
-    
+    var didFetchProfileImage = false
     var returnedURL: URL? = URL(string: "https://test.com/avatar.jpg")
     var didUploadImage = false
     var didUpdateProfile = false
     
     func fetchCurrentUser() async -> ProfileUser? {
+        fetchUserCallCount += 1
         return userToReturn
     }
     
     func fetchProfileImage(from url: URL) async -> UIImage? {
+        didFetchProfileImage = true
         return imageToReturn
     }
     
