@@ -86,7 +86,7 @@ final class AuthViewModelTests: XCTestCase {
 
         // THEN
         XCTAssertFalse(viewModel.isAuthenticated)
-        XCTAssertEqual(viewModel.errorMessage, "Passwords do not match")
+        XCTAssertEqual(viewModel.errorMessage, "Les mots de passe ne correspondent pas")
         XCTAssertFalse(authService.didRegister)
     }
     
@@ -140,6 +140,6 @@ final class AuthViewModelTests: XCTestCase {
 
         // THEN
         XCTAssertFalse(result)
-        XCTAssertEqual(viewModel.errorMessage, "Passwords do not match")
+        XCTAssertEqual(viewModel.errorMessage, "Les mots de passe ne correspondent pas")
     }
 }
