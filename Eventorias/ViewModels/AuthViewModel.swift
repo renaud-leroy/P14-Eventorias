@@ -51,13 +51,13 @@ final class AuthViewModel {
             try await authService.createUser(email: email, password: password)
             isAuthenticated = true
         } catch {
-            errorMessage = "Registration failed"
+            errorMessage = "Problème d'enregistrement"
         }
     }
     
     func verifyPassword(password: String, confirmPassword: String) -> Bool {
         guard password == confirmPassword else {
-            errorMessage = "Passwords do not match"
+            errorMessage = "Les mots de passe ne correspondent pas"
             return false
         }
         errorMessage = nil

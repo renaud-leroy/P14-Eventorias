@@ -31,32 +31,47 @@ struct CreateEventView: View {
     var body: some View {
         ZStack {
             Color.customColorBackground.ignoresSafeArea()
-            VStack(spacing: 26) {
+            VStack(spacing: 14) {
                 FormField(label: "Title", placeholder: "New Event", isSecureTextEntry: false, text: $title)
+                    .accessibilityLabel("Titre de l'événement")
+                    .accessibilityHint("Champ obligatoire")
+                    .accessibilityElement(children: .contain)
+                    .accessibilityLabel("Créer un événement")
                 FormField(label: "Description", placeholder: "Tap here to enter your description", isSecureTextEntry: false, text: $description)
+                    .accessibilityLabel("Description de l'événement")
+                    .accessibilityHint("Champ obligatoire")
                 HStack {
                     DateFormField(label: "Date", date: $eventDate)
                         .environment(\.colorScheme, .dark)
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("Date de l'événement")
                     TimeFormField(label: "Time", date: $eventDate)
                         .environment(\.colorScheme, .dark)
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("Heure de l'événement")
                 }
                 FormField(label: "Address", placeholder: "Enter full address", isSecureTextEntry: false, text: $address)
+                    .accessibilityLabel("Adresse de l'événement")
+                    .accessibilityHint("Champ obligatoire")
                 HStack(spacing: 18) {
                     Button {
                         showingCamera = true
                     } label: {
                         CameraButton()
                     }
+                    .accessibilityLabel("Prendre une photo avec la caméra")
                     PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()){
                         PickerButton()
                     }
+                    .accessibilityLabel("Choisir une image depuis la photothèque")
                 }
-                .padding(16)
+                .padding(14)
                 if let selectedImage = selectedImage {
                     Image(uiImage: selectedImage)
                         .resizable()
                         .scaledToFit()
                         .frame(maxHeight: 150)
+                        .accessibilityHidden(true)
                 }
                 Spacer()
                 Button {
@@ -76,11 +91,18 @@ struct CreateEventView: View {
                         .fontWeight(.bold)
                 }
                 .disabled(!isFormValid || vm.isLoading)
+                .accessibilityLabel("Valider la création de l'événement")
+                .accessibilityHint(
+                    isFormValid
+                    ? "Crée l'événement"
+                    : "Veuillez remplir tous les champs obligatoires"
+                )
             }
             .padding(.top, 40)
             .padding()
             .sheet(isPresented: $showingCamera) {
                 CameraView(image: $selectedImage)
+                    .ignoresSafeArea(edges: .all)
             }
             .onChange(of: selectedItem) { _, newItem in
                 if let newItem = newItem {
@@ -105,9 +127,10 @@ struct CameraButton: View {
     var body: some View {
         Image(systemName: "camera")
             .frame(width: 55, height: 55)
-            .foregroundStyle(Color.primary)
+            .foregroundStyle(Color.black)
             .background(Color.white)
             .cornerRadius(16)
+            .accessibilityHidden(true)
     }
 }
 
@@ -168,6 +191,7 @@ struct PickerButton: View {
             .foregroundStyle(Color.white)
             .background(Color.customRed)
             .cornerRadius(16)
+            .accessibilityHidden(true)
     }
 }
 

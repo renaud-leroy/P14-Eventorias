@@ -22,6 +22,7 @@ struct EventDetailView: View {
                 dateTimeSection
                 Text(event.description)
                     .font(.subheadline)
+                    .accessibilityLabel("Description : \(event.description)")
                 locationSection
             }
             .padding()
@@ -50,10 +51,12 @@ struct EventDetailView: View {
             .frame(width: 360, height: 360)
             .clipped()
             .cornerRadius(14)
+            .accessibilityHidden(true)
         } else {
             Color.gray.opacity(0.3)
                 .frame(width: 360, height: 360)
                 .cornerRadius(14)
+                .accessibilityHidden(true)
         }
     }
 
@@ -76,8 +79,13 @@ struct EventDetailView: View {
                 .scaledToFill()
                 .frame(width: 44, height: 44)
                 .clipShape(Circle())
+                .accessibilityHidden(true)
         }
         .font(.subheadline)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(
+            "Date et heure : \(event.date)"
+        )
     }
 
     private var locationSection: some View {
@@ -86,6 +94,7 @@ struct EventDetailView: View {
             Text(event.address)
                 .font(.headline)
                 .frame(maxWidth: 170, maxHeight: 70)
+                .accessibilityLabel("Adresse : \(event.address)")
             Spacer()
             if let coordinate {
                 Map(
@@ -104,10 +113,12 @@ struct EventDetailView: View {
                 }
                 .frame(maxWidth: 150, maxHeight: 70)
                 .cornerRadius(12)
+                .accessibilityHidden(true)
             } else {
                 Color.gray.opacity(0.3)
                     .frame(maxWidth: 150, maxHeight: 70)
                     .cornerRadius(12)
+                    .accessibilityHidden(true)
             }
         }
     }
@@ -123,4 +134,3 @@ struct EventDetailView: View {
         }
     }
 }
-

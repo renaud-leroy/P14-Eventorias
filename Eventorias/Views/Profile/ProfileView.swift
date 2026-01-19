@@ -16,11 +16,19 @@ struct ProfileView: View {
     var body: some View {
         VStack(spacing: 26) {
             FormField(label: "Name", placeholder: profileVM.name, isSecureTextEntry: false, text: $profileVM.name)
+                .accessibilityLabel("Nom")
+                .accessibilityHint("Champ modifiable")
             FormField(label: "Email", placeholder: profileVM.email, isSecureTextEntry: false, text: $profileVM.email)
+                .accessibilityLabel("Adresse e-mail")
+                .accessibilityHint("Champ modifiable")
             HStack(spacing: 20) {
                 Toggle("", isOn: $profileVM.isNotificationOn)
                     .tint(Color(.customRed))
                     .labelsHidden()
+                    .accessibilityLabel("Notifications")
+                    .accessibilityValue(
+                        profileVM.isNotificationOn ? "Activées" : "Désactivées"
+                    )
                     .onChange(of: profileVM.isNotificationOn) { _, newValue in
                         if newValue {
                             profileVM.enableNotifications()
@@ -34,6 +42,7 @@ struct ProfileView: View {
             Spacer()
                 .padding(.vertical)
                 .background(Color(.customColorBackground))
+                .accessibilityHidden(true)
         }
         .padding()
         .task {
@@ -57,7 +66,10 @@ struct ProfileView: View {
                     .scaledToFill()
                     .frame(width: 36, height: 36)
                     .clipShape(Circle())
+                    .accessibilityHidden(true)
                 }
+                .accessibilityLabel("Modifier la photo de profil")
+                .accessibilityAddTraits(.isButton)
             }
         }
         .photosPicker(
@@ -86,4 +98,3 @@ struct ProfileView: View {
 #Preview {
     ProfileView(profileVM: ProfileViewModel(profileService: ProfileService()))
 }
-

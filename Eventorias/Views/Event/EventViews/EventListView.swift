@@ -20,6 +20,7 @@ struct EventListView: View {
                     Image(systemName: "magnifyingglass")
                     TextField("", text: $searchQuery)
                 }
+                .accessibilityLabel("Rechercher un événement")
                 .foregroundStyle(.customWhite)
                 .padding(.horizontal, 12)
                 .frame(height: 35)
@@ -62,6 +63,11 @@ struct EventListView: View {
                             } label: {
                                 EventRow(event: event)
                             }
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel(
+                                "\(event.title)"
+                            )
+                            .accessibilityAddTraits(.isButton)
                             .listRowInsets(EdgeInsets(
                                 top: 6,
                                 leading: 0,

@@ -16,15 +16,18 @@ struct MainTabView: View {
         TabView {
             EventsNavigation(eventVM: eventVM)
                 .tabItem {
-                    Label("Events", systemImage: "calendar")
+                    Label("Événements", systemImage: "calendar")
                 }
+                .accessibilityLabel("Onglet Événements")
 
             ProfileNavigation(profileVM: profileVM)
                 .tabItem {
-                    Label("Profile", systemImage: "person")
+                    Label("Profil", systemImage: "person")
                 }
+                .accessibilityLabel("Onglet Profil")
         }
         .tint(.customRed)
+        .accessibilityElement(children: .contain)
     }
 }
 

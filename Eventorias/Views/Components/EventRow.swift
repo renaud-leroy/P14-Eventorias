@@ -34,6 +34,7 @@ struct EventRow: View {
                 } placeholder: {
                     Color.gray.opacity(0.3)
                 }
+                .accessibilityHidden(true)
                 .frame(width: 130, height: 80)
                 .clipped()
                 .cornerRadius(14)

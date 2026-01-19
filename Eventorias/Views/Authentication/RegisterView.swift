@@ -17,15 +17,24 @@ struct RegisterView: View {
         ZStack {
             Color(.customColorBackground)
                 .edgesIgnoringSafeArea(.all)
+                .accessibilityHidden(true)
             VStack(spacing: 20) {
                 Text("Register")
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundStyle(.customWhite)
                     .padding(30)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityLabel("Créer un compte")
                 FormField(label: "Email", placeholder: "", isSecureTextEntry: false, text: $email)
+                    .accessibilityLabel("Adresse e-mail")
+                    .accessibilityHint("Champ obligatoire")
                 FormField(label: "Password", placeholder: "", isSecureTextEntry: true, text: $password)
+                    .accessibilityLabel("Mot de passe")
+                    .accessibilityHint("Champ obligatoire")
                 FormField(label: "Confirmation", placeholder: "", isSecureTextEntry: true, text: $vm.confirmPassword)
+                    .accessibilityLabel("Confirmation du mot de passe")
+                    .accessibilityHint("Doit correspondre au mot de passe")
                 Button {
                    Task {
                         await vm.register(email: email, password: password)
@@ -34,10 +43,13 @@ struct RegisterView: View {
                     CustomButton(label: "Sign Up", iconName: "person.badge.plus")
                         .padding(20)
                 }
+                .accessibilityLabel("Créer le compte")
+                .accessibilityHint("Valide l'inscription")
                 HStack {
                     Text("Have an account")
                         .foregroundStyle(.customColorTextForm)
                         .font(.caption)
+                        .accessibilityLabel("Vous avez déjà un compte")
                     Button {
                         dismiss()
                     } label: {
@@ -45,6 +57,8 @@ struct RegisterView: View {
                             .foregroundStyle(.customRed)
                             .font(.caption)
                     }
+                    .accessibilityLabel("Se connecter")
+                    .accessibilityHint("Retour à l'écran de connexion")
                 }
             }
             .padding()
